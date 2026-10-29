@@ -26,7 +26,11 @@ export default slackChannel({
     ...base,
     botToken: async (ctx?: { teamId?: string }) => {
       const teamId = ctx?.teamId;
-      if (!teamId) return defaultToken(ctx);
+      if (!teamId) {
+        console.log("[rev-coach] token request with NO workspace -> using default");
+        return defaultToken(ctx);
+      }
+      console.log(`[rev-coach] token request for workspace ${teamId}`);
 
       const result: unknown = await getToken(CONNECTOR, {
         subject: { type: "app" },
